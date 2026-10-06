@@ -10,16 +10,23 @@ for contour in contours:
     approx=cv2.approxPolyDP(contour,0.01*cv2.arcLength(contour,True),True)
     corners=len(approx)
     
-    if len(approx)==3:
-        cv2.putText(img,"Triangle",(x,y),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
-    elif len(approx)==4:
-        cv2.putText(img,"Rectangle",(x,y),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
-    elif len(approx)==5:
-        cv2.putText(img,"Pentagon",(x,y),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
-    elif len(approx)==6:
-        cv2.putText(img,"Hexagon",(x,y),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
+    if corners==3:
+        shape_name="Triangle"
+    elif corners==4:
+        shape_name="Rectangle"
+    elif corners==5:
+        shape_name="Pentagon"
+    elif corners>5:
+        shape_name="Circle"
     else:
-        cv2.putText(img,"Circle",(x,y),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
+        shape_name="Unknown"
+
+#Draw contours
+    cv2.drawContours(img,[approx],0,(0,255,0),2)
+    x=approx.ravel()[0]
+    y=approx.ravel()[1]-10
+    cv2.putText(img,shape_name,(x,y),cv2.FONT_HERSHEY_COMPLEX,0.6,)
+                
 
 
 cv2.imshow('Contours',img)
